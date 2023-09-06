@@ -13,18 +13,28 @@ class ArticleTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('id');
+        $this->setPrimaryKey('id'); // clave primaria de la tabla
     }
 
     public function columns(): array
     {
         return [
-            Column::make("Id", "id")
+            /* Column::make("Id", "id")
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
             Column::make("Updated at", "updated_at")
+                ->sortable(), */
+            Column::make("Ordenar", "sort")
                 ->sortable(),
+            Column::make("Título", "title")
+                ->searchable()
+                ->sortable(),
+            Column::make("Usuario", "user.name")
+                ->searchable()
+                ->sortable(),
+            Column::make("Publicado", "is_published"),
+            Column::make("Creado", "created_at"),
         ];
     }
 
