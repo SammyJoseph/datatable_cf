@@ -18,12 +18,14 @@ class ArticleTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id'); // clave primaria de la tabla
+        $this->setDefaultSort('title', 'asc'); // orden por defecto
+        $this->setSingleSortingDisabled(); // permite ordenar por diferentes columnas a la vez
     }
 
     public function columns(): array
     {
         return [
-            Column::make("Ordenar", "sort")
+            Column::make("Pos.", "sort")
                 ->sortable(),
             
             Column::make("Título", "title")
