@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -33,7 +34,8 @@ class ArticleTable extends DataTableComponent
             Column::make("Usuario", "user.name")
                 ->searchable()
                 ->sortable(),
-            Column::make("Publicado", "is_published"),
+            BooleanColumn::make("Publicado", "is_published")
+                ->sortable(),
             Column::make("Creado", "created_at"),
         ];
     }
