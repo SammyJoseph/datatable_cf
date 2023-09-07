@@ -45,7 +45,8 @@ class ArticleTable extends DataTableComponent
             ImageColumn::make("Imagen")
                 ->location(fn($row) => 'https://picsum.photos/seed/' . $row->sort . '/200/200'),
 
-            Column::make("Creado", "created_at"),
+            Column::make("Creado", "created_at")
+                ->format(fn($value) => $value->format('d/m/Y')),
 
             ButtonGroupColumn::make("Acciones")
                 ->buttons([
