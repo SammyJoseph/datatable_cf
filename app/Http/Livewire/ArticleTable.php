@@ -31,6 +31,9 @@ class ArticleTable extends DataTableComponent
             Column::make("Título", "title")
                 ->searchable()
                 ->sortable(),
+
+                // búsqueda personalizada ↓
+                // ->searchable(fn($query, $searchTerm) => $query->orWhere('title', 'like', '%' . $searchTerm . '%'))
             
             Column::make("Usuario", "user.name")
                 ->searchable()
