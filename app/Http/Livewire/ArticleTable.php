@@ -28,8 +28,10 @@ class ArticleTable extends DataTableComponent
             /* Column::make("Pos.", "sort")
                 ->sortable(), */
             Column::make("Id")
-                ->sortable(),
-                
+                ->sortable()
+                ->collapseOnTablet(), // oculta la columna en dispositivos móviles (tablets y celulares)
+            
+            /* esta columna no usa collapseOnTablet() para que se muestre en dispositivos móviles ↑↓ */
             Column::make("Título", "title")
                 ->searchable()
                 ->sortable()
@@ -41,16 +43,20 @@ class ArticleTable extends DataTableComponent
             
             Column::make("Autor", "user.name")
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->collapseOnTablet(),
             
             BooleanColumn::make("Publicado", "is_published")
-                ->sortable(),
+                ->sortable()
+                ->collapseOnTablet(),
 
             ImageColumn::make("Imagen")
-                ->location(fn($row) => 'https://picsum.photos/seed/' . $row->sort . '/200/200'),
+                ->location(fn($row) => 'https://picsum.photos/seed/' . $row->sort . '/200/200')
+                ->collapseOnTablet(),
 
             Column::make("Creado", "created_at")
-                ->format(fn($value) => $value->format('d/m/Y')),
+                ->format(fn($value) => $value->format('d/m/Y'))
+                ->collapseOnTablet(),
 
             /* ButtonGroupColumn::make("Acciones")
                 ->buttons([
@@ -86,6 +92,7 @@ class ArticleTable extends DataTableComponent
                 ->label(fn($row) => view('articles.tables.action', [
                     'id' => $row->id // ->id (o cualquier otra propiedad) debe mostrarse en la tabla para que se pueda acceder a él
                 ]))
+                ->collapseOnTablet(),
         ];
     }
 
