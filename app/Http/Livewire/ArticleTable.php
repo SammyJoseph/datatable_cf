@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 class ArticleTable extends DataTableComponent
@@ -24,14 +25,21 @@ class ArticleTable extends DataTableComponent
         return [
             Column::make("Ordenar", "sort")
                 ->sortable(),
+            
             Column::make("Título", "title")
                 ->searchable()
                 ->sortable(),
+            
             Column::make("Usuario", "user.name")
                 ->searchable()
                 ->sortable(),
+            
             BooleanColumn::make("Publicado", "is_published")
                 ->sortable(),
+
+            ImageColumn::make("Imagen")
+                ->location(fn($row) => 'https://picsum.photos/seed/' . $row->sort . '/200/200'),
+
             Column::make("Creado", "created_at"),
 
             ButtonGroupColumn::make("Acciones")
