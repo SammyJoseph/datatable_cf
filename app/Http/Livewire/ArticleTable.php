@@ -25,17 +25,21 @@ class ArticleTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Pos.", "sort")
+            /* Column::make("Pos.", "sort")
+                ->sortable(), */
+            Column::make("Id")
                 ->sortable(),
-            
+                
             Column::make("Título", "title")
                 ->searchable()
-                ->sortable(),
-
-                // búsqueda personalizada ↓
+                ->sortable()
+                /* búsqueda personalizada ↓ */
                 // ->searchable(fn($query, $searchTerm) => $query->orWhere('title', 'like', '%' . $searchTerm . '%'))
+                ->format(function ($value) {
+                    return strlen($value) > 40 ? substr($value, 0, 40) . '...' : $value;
+                }),
             
-            Column::make("Usuario", "user.name")
+            Column::make("Autor", "user.name")
                 ->searchable()
                 ->sortable(),
             
@@ -72,10 +76,16 @@ class ArticleTable extends DataTableComponent
                 ->html(), */
 
             /* También se puede retornar una vista ↑↓ */
-            Column::make("Acciones", 'id')
+            /* Column::make("Acciones", 'id')
                 ->format(fn($value) => view('articles.tables.action', [
                     'id' => $value
-                ])),
+                ])), */
+
+            /* Usando labels ↑↓ */
+            Column::make("Acciones")
+                ->label(fn($row) => view('articles.tables.action', [
+                    'id' => $row->id // ->id (o cualquier otra propiedad) debe mostrarse en la tabla para que se pueda acceder a él
+                ]))
         ];
     }
 
