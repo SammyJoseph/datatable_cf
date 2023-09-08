@@ -17,7 +17,13 @@ class ArticleTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('id'); // clave primaria de la tabla
+        $this->setPrimaryKey('id') // clave primaria de la tabla
+            ->setTableRowUrl(function($row){ // url de toda la fila
+                return route('dashboard', ['article' => $row->id]);
+            })
+            ->setTableRowUrlTarget(function(){ // abre la url en una nueva pestaña
+                return '_blank';
+            });
         $this->setDefaultSort('title', 'asc'); // orden por defecto
         $this->setSingleSortingDisabled(); // permite ordenar por diferentes columnas a la vez
     }
@@ -44,7 +50,8 @@ class ArticleTable extends DataTableComponent
             Column::make("Autor", "user.name")
                 ->searchable()
                 ->sortable()
-                ->collapseOnTablet(),
+                ->collapseOnTablet()
+                ->unclickable(), // deshabilita aquí el enlace de la columna que se definió en setTableRowUrl()
             
             BooleanColumn::make("Publicado", "is_published")
                 ->sortable()
@@ -92,7 +99,8 @@ class ArticleTable extends DataTableComponent
                 ->label(fn($row) => view('articles.tables.action', [
                     'id' => $row->id // ->id (o cualquier otra propiedad) debe mostrarse en la tabla para que se pueda acceder a él
                 ]))
-                ->collapseOnTablet(),
+                ->collapseOnTablet()
+                ->unclickable(), // deshabilita aquí el enlace de la columna que se definió en setTableRowUrl()
         ];
     }
 
