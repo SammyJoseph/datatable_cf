@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         <!-- Styles -->
         @livewireStyles
@@ -41,5 +42,18 @@
         @stack('modals')
 
         @livewireScripts
+        
+        <script>
+            Livewire.on('error', message => { // 'error' viene desde $this->emit() de ArticleTable de Livewire
+                // alert(message);
+                Swal.fire({ // ↑↓
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: message,
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            });
+            
+        </script>
     </body>
 </html>

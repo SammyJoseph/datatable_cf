@@ -15,6 +15,11 @@ class ArticleTable extends DataTableComponent
 {
     // protected $model = Article::class; // se utilizará el método builder() en lugar del modelo
 
+    /* también se puede hacer desde configure() con el método setBulkActions() */
+    /* public array $bulkActions = [ // acciones masivas
+        'deleteSelected' => 'Eliminar seleccionados'
+    ]; */
+
     public function configure(): void
     {
         $this->setPrimaryKey('id') // clave primaria de la tabla
@@ -35,6 +40,10 @@ class ArticleTable extends DataTableComponent
         
         // $this->setPerPageVisibilityStatus(false); // deshabilita la opción de elegir la cantidad de registros por página
         // $this->setPaginationStatus(false); // deshabilita la paginación
+
+        $this->setBulkActions([ // acciones masivas
+            'deleteSelected' => 'Eliminar seleccionados'
+        ]);
     }
 
     public function columns(): array
@@ -116,6 +125,17 @@ class ArticleTable extends DataTableComponent
     public function builder(): Builder
     {
         return Article::query()
-                    ->with('user');
+                    ->with('user');        
+    }
+
+    public function deleteSelected()
+    {
+        if ($this->getSelected()) {
+            Article::whereIn('id', $this->getSelected())->delete(); // elimina los registros seleccionados
+            $this->clearSelected(); // limpia los registros seleccionados
+        }
+        else {
+            $this->emit('error', 'No hay registros seleccionados');
+        }
     }
 }
