@@ -25,7 +25,16 @@ class ArticleTable extends DataTableComponent
                 return '_blank';
             });
         $this->setDefaultSort('title', 'asc'); // orden por defecto
+        
         $this->setSingleSortingDisabled(); // permite ordenar por diferentes columnas a la vez
+
+        $this->setPageName('pag'); // nombre de la paginación
+
+        $this->setPerPageAccepted([5, 20, 50, 100, -1]); // cantidad de registros por página (-1 para mostrar todos los registros)
+        $this->setPerPage(5); // cantidad de registros por página (por defecto)
+        
+        // $this->setPerPageVisibilityStatus(false); // deshabilita la opción de elegir la cantidad de registros por página
+        // $this->setPaginationStatus(false); // deshabilita la paginación
     }
 
     public function columns(): array
@@ -58,7 +67,7 @@ class ArticleTable extends DataTableComponent
                 ->collapseOnTablet(),
 
             ImageColumn::make("Imagen")
-                ->location(fn($row) => 'https://picsum.photos/seed/' . $row->sort . '/200/200')
+                ->location(fn($row) => 'https://picsum.photos/seed/' . $row->id . '/200/200')
                 ->collapseOnTablet(),
 
             Column::make("Creado", "created_at")
