@@ -13,7 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10" defer></script>        
 
         <!-- Styles -->
         @livewireStyles
@@ -42,6 +42,8 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v0.x.x/dist/livewire-sortable.js"></script>
         
         <script>
             Livewire.on('error', message => { // 'error' viene desde $this->emit() de ArticleTable de Livewire

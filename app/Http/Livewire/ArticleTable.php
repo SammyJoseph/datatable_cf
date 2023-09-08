@@ -47,13 +47,18 @@ class ArticleTable extends DataTableComponent
             'deleteSelected' => 'Eliminar',
             'exportSelected' => 'Exportar a Excel'
         ]);
+
+        $this->setReorderStatus(true); // habilita el reordenamiento de las filas
+
+        $this->setHideReorderColumnUnlessReorderingEnabled(); // oculta la columna de reordenamiento cuando no se está reordenando
     }
 
     public function columns(): array
     {
         return [
-            /* Column::make("Pos.", "sort")
-                ->sortable(), */
+            Column::make("Pos.", "sort")
+                ->sortable(),                
+
             Column::make("Id")
                 ->sortable()
                 ->collapseOnTablet(), // oculta la columna en dispositivos móviles (tablets y celulares)
@@ -152,6 +157,16 @@ class ArticleTable extends DataTableComponent
         else {
             /* si ninguna fila es seleccionada, descargar los registros que se están viendo en pantalla */
             return Excel::download(new ArticlesExport($this->getRows()), 'articles.xlsx'); // getRows() obtiene todos los registros que se están mostrando en la tabla
+        }
+    }
+
+    public function reorder($items)
+    {
+        // dd ($items);
+        foreach ($items as $item) { // $items es un array con los registros reordenados
+            Article::find((int)$item['value'])->update([
+                'sort' => (int)$item['order']
+            ]);
         }
     }
 }
