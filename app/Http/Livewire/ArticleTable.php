@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Exports\ArticlesExport;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ArticleTable extends DataTableComponent
 {
@@ -42,7 +44,8 @@ class ArticleTable extends DataTableComponent
         // $this->setPaginationStatus(false); // deshabilita la paginación
 
         $this->setBulkActions([ // acciones masivas
-            'deleteSelected' => 'Eliminar seleccionados'
+            'deleteSelected' => 'Eliminar',
+            'exportSelected' => 'Exportar a Excel'
         ]);
     }
 
@@ -136,6 +139,19 @@ class ArticleTable extends DataTableComponent
         }
         else {
             $this->emit('error', 'No hay registros seleccionados');
+        }
+    }
+
+    public function exportSelected()
+    {
+        if ($this->getSelected()) {
+            $articles = Article::whereIn('id', $this->getSelected())->get(); // obtiene los registros seleccionados
+            $this->clearSelected();
+            return Excel::download(new ArticlesExport($articles), 'articles.xlsx');
+        }
+        else {
+            /* si ninguna fila es seleccionada, descargar los registros que se están viendo en pantalla */
+            return Excel::download(new ArticlesExport($this->getRows()), 'articles.xlsx'); // getRows() obtiene todos los registros que se están mostrando en la tabla
         }
     }
 }
