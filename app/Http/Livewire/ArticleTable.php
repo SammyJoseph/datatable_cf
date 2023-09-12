@@ -12,6 +12,7 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Maatwebsite\Excel\Facades\Excel;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ArticleTable extends DataTableComponent
 {
@@ -168,5 +169,22 @@ class ArticleTable extends DataTableComponent
                 'sort' => (int)$item['order']
             ]);
         }
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Publicado')
+                ->options([
+                    ''  => 'Todos',
+                    '1' => 'Sí',
+                    '0' => 'No'
+                ])
+                ->filter(function(Builder $query, $value) {
+                    if($value != ''){ // si hay un valor (1 o 0)
+                        $query->where('is_published', $value); // mostrar los que coincidan con $value (1 o 0)
+                    }
+                })
+        ];
     }
 }
