@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\NumberFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\TextFilter;
 
 class ArticleTable extends DataTableComponent
 {
@@ -204,6 +205,10 @@ class ArticleTable extends DataTableComponent
             NumberFilter::make('ID >=')
                 ->filter(function($query, $value){
                     $query->where('articles.id', '>=', $value);
+                }),
+            TextFilter::make('Título')
+                ->filter(function($query, $value){
+                    $query->where('title', 'like', '%' . $value . '%');
                 })
         ];
     }
