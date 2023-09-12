@@ -12,6 +12,7 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Maatwebsite\Excel\Facades\Excel;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ArticleTable extends DataTableComponent
@@ -174,7 +175,7 @@ class ArticleTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            SelectFilter::make('Publicado')
+            SelectFilter::make('Publicado') // filtros con select
                 ->options([
                     ''  => 'Todos',
                     '1' => 'Sí',
@@ -184,6 +185,20 @@ class ArticleTable extends DataTableComponent
                     if($value != ''){ // si hay un valor (1 o 0)
                         $query->where('is_published', $value); // mostrar los que coincidan con $value (1 o 0)
                     }
+                }),
+            DateFilter::make('Desde')
+                ->config([
+                    'min'   => '2023-01-01',
+                ])
+                ->filter(function($query, $value){
+                    $query->whereDate('articles.created_at', '>=', $value);
+                }),
+            DateFilter::make('Hasta')
+                ->config([
+                    'min'   => '2023-01-01',
+                ])
+                ->filter(function($query, $value){
+                    $query->whereDate('articles.created_at', '<=', $value);
                 })
         ];
     }
