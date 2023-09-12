@@ -13,6 +13,7 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\NumberFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ArticleTable extends DataTableComponent
@@ -199,6 +200,10 @@ class ArticleTable extends DataTableComponent
                 ])
                 ->filter(function($query, $value){
                     $query->whereDate('articles.created_at', '<=', $value);
+                }),
+            NumberFilter::make('ID >=')
+                ->filter(function($query, $value){
+                    $query->where('articles.id', '>=', $value);
                 })
         ];
     }
